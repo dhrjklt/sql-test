@@ -42,8 +42,8 @@ class TestExample(DbTest):
             os.path.join(PATH_TO_SQL_DIR, "organizations.sql")
         )
 
-        sql = """
-        """
+        sql = 'select count(esec.sales_organization_id) as "subordinates_count",o.id  from organizations o left outer join enterprise_sales_enterprise_customers esec on o.id = esec.sales_organization_id group by 2 order by 2'
+        
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(sql)
             actual = cur.fetchall()
@@ -87,8 +87,8 @@ class TestExample(DbTest):
             os.path.join(PATH_TO_SQL_DIR, "japan_segments.sql")
         )
 
-        sql = """
-        """
+        sql = 'select id, ST_XMin(ST_Centroid(bounds)) as "longitude",round(ST_YMin(ST_Centroid(bounds))::numeric,2) as "latitude" from japan_segments group by 1 order by RIGHT(id,9)'
+        
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(sql)
             actual = cur.fetchall()
